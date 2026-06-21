@@ -4,6 +4,8 @@
  */
 package com.mycompany.kolaborasa.view;
 
+import com.mycompany.kolaborasa.model.User;
+import com.mycompany.kolaborasa.model.UserDAO;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -27,40 +29,21 @@ public class ProfilView extends javax.swing.JFrame {
     }
 
     public ProfilView(String email) {
-        initComponents();
-        this.userEmailAktif = email;
-        tampilkanNamaUser();
+       this.userEmailAktif = email;
+    initComponents(); // Pastikan initComponents dipanggil SEBELUM tampilkanNamaUser
+    tampilkanNamaUser();
+}
+
+private void tampilkanNamaUser() {
+    if (userEmailAktif == null) return;
+    
+    com.mycompany.kolaborasa.model.UserDAO dao = new com.mycompany.kolaborasa.model.UserDAO();
+    com.mycompany.kolaborasa.model.User user = dao.getUserByEmail(userEmailAktif);
+    
+    if (user != null) {
+        jLabel11.setText(user.getNama()); // Sekarang jLabel11 akan terupdate
     }
-
-    private void tampilkanNamaUser() {
-        if (userEmailAktif == null) {
-            return; // Jika email kosong, jangan ambil data
-        }
-        jLabel7.setText("TES BERHASIL");
-        try {
-            String url = "jdbc:mysql://localhost:3306/kolaborasa_pbo";
-            String userDB = "root";
-            String passDB = "";
-            Connection conn = DriverManager.getConnection(url, userDB, passDB);
-
-            // Query untuk mengambil nama berdasarkan email
-            String sql = "SELECT nama FROM users WHERE email = ?";
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setString(1, userEmailAktif);
-
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                // Mengubah teks pada jLabel7 (label USER) dengan nama dari database
-                jLabel7.setText(rs.getString("nama"));
-            }
-
-            pst.close();
-            conn.close();
-        } catch (SQLException e) {
-            System.err.println("Gagal mengambil nama: " + e.getMessage());
-        }
-    }
+}
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -89,6 +72,7 @@ public class ProfilView extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        jLabel11 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -239,6 +223,9 @@ public class ProfilView extends javax.swing.JFrame {
 
         jLabel10.setText("Following");
 
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
+        jLabel11.setText("User");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -256,11 +243,17 @@ public class ProfilView extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
                         .addComponent(jLabel10)
                         .addGap(14, 14, 14))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(42, 42, 42))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(105, 105, 105)
+                .addGap(71, 71, 71)
+                .addComponent(jLabel11)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel7)
                 .addGap(76, 76, 76)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -333,7 +326,7 @@ public class ProfilView extends javax.swing.JFrame {
                                     .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 58, Short.MAX_VALUE)))
+                                .addGap(0, 26, Short.MAX_VALUE)))
                         .addGap(18, 18, 18))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -418,6 +411,7 @@ public class ProfilView extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;

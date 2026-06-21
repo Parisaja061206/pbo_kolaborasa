@@ -4,6 +4,9 @@
  */
 package com.mycompany.kolaborasa.view;
 
+import com.mycompany.kolaborasa.controller.UserController;
+import com.mycompany.kolaborasa.model.User;
+import com.mycompany.kolaborasa.model.UserDAO; // Import DAO
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,61 +14,44 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author harir
- */
+import com.mycompany.kolaborasa.model.User;
+
+import com.mycompany.kolaborasa.model.User;
+
 public class SettingsView extends javax.swing.JFrame {
 
+    // 1. Deklarasikan logger agar error "cannot find symbol" hilang
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SettingsView.class.getName());
+
+    private com.mycompany.kolaborasa.model.UserDAO userDAO;
     private String userEmailAktif;
 
-    /**
-     * Creates new form Settings
-     */
-    public SettingsView() {
-        initComponents();
-    }
-
+    // Konstruktor utama dengan email
     public SettingsView(String email) {
         initComponents();
         this.userEmailAktif = email;
-
+        this.userDAO = new com.mycompany.kolaborasa.model.UserDAO();
         tampilkanDataUser();
     }
 
+    // 2. Tambahkan konstruktor kosong agar error "constructor cannot be applied" hilang
+    public SettingsView() {
+        initComponents();
+        this.userDAO = new com.mycompany.kolaborasa.model.UserDAO();
+    }
+
     private void tampilkanDataUser() {
-        try {
-            // Sesuaikan nama database kamu
-            String url = "jdbc:mysql://localhost:3306/kolaborasa_pbo";
-            String userDB = "root";
-            String passDB = "";
+        if (userEmailAktif == null) {
+            return;
+        }
 
-            Connection conn = DriverManager.getConnection(url, userDB, passDB);
-
-            // Ambil data user berdasarkan email yang login
-            String sql = "SELECT * FROM users WHERE email=?";
-            PreparedStatement pst = conn.prepareStatement(sql);
-            pst.setString(1, userEmailAktif);
-
-            ResultSet rs = pst.executeQuery();
-
-            if (rs.next()) {
-                // Set text pada JTextField sesuai data di database
-                NamaField.setText(rs.getString("nama"));
-                EmailField.setText(rs.getString("email"));
-                PassField.setText(rs.getString("password"));
-
-                // Opsional: Buat EmailField menjadi tidak bisa diedit jika email adalah Primary Key
-                EmailField.setEditable(false);
-            }
-
-            rs.close();
-            pst.close();
-            conn.close();
-
-        } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Gagal mengambil data: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        // Menggunakan UserDAO untuk mengambil data, jauh lebih bersih
+        User user = userDAO.getUserByEmail(userEmailAktif);
+        if (user != null) {
+            NamaField.setText(user.getNama());
+            EmailField.setText(user.getEmail());
+            PassField.setText(user.getPassword());
+            EmailField.setEditable(false); // Email tidak bisa diubah karena primary key
         }
     }
 
@@ -305,49 +291,21 @@ public class SettingsView extends javax.swing.JFrame {
 
     private void TmblSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TmblSimpanActionPerformed
         // TODO add your handling code here:
-    String namaBaru = NamaField.getText();
-    String passBaru = new String(PassField.getPassword());
-    String emailTarget = EmailField.getText(); 
+        // 1. Ambil input
+        String namaBaru = NamaField.getText();
+        String passBaru = new String(PassField.getPassword());
+        String emailTarget = EmailField.getText();
 
-    // Cek apakah email kosong
-    if (emailTarget.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Email tidak boleh kosong!");
-        return;
-    }
+        // 2. Panggil Controller
+        UserController controller = new UserController();
 
-    try {
-        String url = "jdbc:mysql://localhost:3306/kolaborasa_pbo";
-        String userDB = "root";
-        String passDB = "";
-
-        Connection conn = DriverManager.getConnection(url, userDB, passDB);
-        
-        String sql = "UPDATE users SET nama=?, password=? WHERE email=?";
-        PreparedStatement pst = conn.prepareStatement(sql);
-        pst.setString(1, namaBaru);
-        pst.setString(2, passBaru);
-        pst.setString(3, emailTarget); 
-
-        // --- CEK DI OUTPUT NETBEANS ---
-        System.out.println("DEBUG: Update Nama: " + namaBaru + ", Pass: " + passBaru + ", Email: " + emailTarget);
-
-        int barisDiubah = pst.executeUpdate();
-
-        if (barisDiubah > 0) {
-            JOptionPane.showMessageDialog(this, "Data profil berhasil diperbarui!");
+        // 3. Eksekusi
+        if (controller.prosesUpdate(namaBaru, emailTarget, passBaru)) {
+            JOptionPane.showMessageDialog(this, "Profil berhasil diperbarui!");
+            this.dispose(); // Menutup program profil setelah update berhasil
         } else {
-            // Ini akan muncul jika emailTarget tidak ditemukan di database
-            JOptionPane.showMessageDialog(this, "Gagal: Tidak ada data dengan email " + emailTarget + " ditemukan.");
+            JOptionPane.showMessageDialog(this, "Gagal update. Pastikan email tidak diubah.");
         }
-
-        pst.close();
-        conn.close();
-
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Error Database: " + e.getMessage());
-        e.printStackTrace(); 
-    }
-
     }//GEN-LAST:event_TmblSimpanActionPerformed
 
     private void jLabel6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel6MouseClicked
