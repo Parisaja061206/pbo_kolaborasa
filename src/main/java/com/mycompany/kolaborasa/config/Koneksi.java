@@ -15,30 +15,19 @@ public class Koneksi {
     private static Connection koneksi;
 
     // Method yang akan dipanggil oleh Model (DAO) untuk mengambil koneksi
-    public static Connection getConnection() {
-        // Jika belum ada koneksi yang terbuka, maka buat koneksi baru
-        if (koneksi == null) {
-            try {
-                // 1. Alamat URL Database Anda (Driver : host : port / nama_database)
-                String url = "jdbc:mysql://localhost:3306/kolaborasa_pbo"; 
-                
-                // 2. Username default MySQL (jika menggunakan XAMPP biasanya "root")
-                String user = "root"; 
-                
-                // 3. Password default MySQL (jika menggunakan XAMPP biasanya kosong "")
-                String password = ""; 
-                
-                // Mendaftarkan Driver MySQL JDBC ke sistem Java
-                DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
-                
-                // Membuka koneksi menggunakan data di atas
-                koneksi = DriverManager.getConnection(url, user, password);
-                
-                System.out.println("Koneksi ke Database Berhasil!");
-            } catch (SQLException e) {
-                System.out.println("Koneksi ke Database Gagal! Error: " + e.getMessage());
-            }
+public static Connection getConnection() {
+    try {
+        if (koneksi == null || koneksi.isClosed()) {
+            String url = "jdbc:mysql://localhost:3306/kolaborasa_pbo";
+            String user = "root";
+            String password = "";
+            DriverManager.registerDriver(new com.mysql.cj.jdbc.Driver());
+            koneksi = DriverManager.getConnection(url, user, password);
+            System.out.println("Koneksi ke Database Berhasil!");
         }
-        return koneksi;
+    } catch (SQLException e) {
+        System.out.println("Koneksi ke Database Gagal! Error: " + e.getMessage());
     }
+    return koneksi;
+}
 }

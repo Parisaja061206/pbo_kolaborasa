@@ -34,10 +34,11 @@ public class ListIdeView extends javax.swing.JFrame {
         controller.tampilkanDataKeTabel(this);
     }
 
-    public ListIdeView(String email) {
-        initComponents();
-        this.userEmailAktif = email;
-    }
+   public ListIdeView(String email) {
+    initComponents();
+    this.userEmailAktif = email;
+    loadData(); // tambahkan ini
+}
 
     /**
      * This method is called from within the constructor to initialize the form.

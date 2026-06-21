@@ -41,6 +41,6 @@ public class Ide {
     public String getStatus() { return status; }
 
     public void setId(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    this.id = id;
     }
 }
