@@ -45,9 +45,9 @@ public void clearForm() {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        btnBeranda = new javax.swing.JButton();
         btnListIde = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btnProfil = new javax.swing.JButton();
         btnTambahIde = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -64,13 +64,14 @@ public void clearForm() {
 
         jPanel1.setBackground(new java.awt.Color(51, 0, 255));
 
-        jButton1.setText("Beranda");
-        jButton1.addActionListener(this::jButton1ActionPerformed);
+        btnBeranda.setText("Beranda");
+        btnBeranda.addActionListener(this::btnBerandaActionPerformed);
 
         btnListIde.setText("List Ide");
         btnListIde.addActionListener(this::btnListIdeActionPerformed);
 
-        jButton3.setText("Profil");
+        btnProfil.setText("Profil");
+        btnProfil.addActionListener(this::btnProfilActionPerformed);
 
         btnTambahIde.setText("Tambah Ide");
 
@@ -84,11 +85,11 @@ public void clearForm() {
                         .addGap(24, 24, 24)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(btnTambahIde, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(btnProfil, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
+                            .addComponent(btnBeranda, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
                             .addComponent(btnListIde, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
@@ -96,13 +97,13 @@ public void clearForm() {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(jButton1)
+                .addComponent(btnBeranda)
                 .addGap(18, 18, 18)
                 .addComponent(btnListIde)
                 .addGap(18, 18, 18)
                 .addComponent(btnTambahIde)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3)
+                .addComponent(btnProfil)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -180,9 +181,12 @@ public void clearForm() {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnBerandaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBerandaActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+        HomeView halamanHome = new HomeView();
+        halamanHome.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnBerandaActionPerformed
 
     private void btnPilihGambarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPilihGambarActionPerformed
         // TODO add your handling code here:
@@ -238,6 +242,13 @@ public void clearForm() {
     this.dispose();
     }//GEN-LAST:event_btnListIdeActionPerformed
 
+    private void btnProfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProfilActionPerformed
+        // TODO add your handling code here:
+        ProfilView halamanProfil = new ProfilView();
+        halamanProfil.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnProfilActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -264,12 +275,12 @@ public void clearForm() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBeranda;
     private javax.swing.JButton btnListIde;
     private javax.swing.JButton btnPilihGambar;
+    private javax.swing.JButton btnProfil;
     private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnTambahIde;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
